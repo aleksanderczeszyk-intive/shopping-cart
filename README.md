@@ -8,9 +8,14 @@ A simple Shopping-cart built with React and Django REST Framework(DRF).
 
 ## Getting Started
 ### Installation
-Clone this repository:
+Clone repository with command below: 
 
-    git clone https://github.com/damnee562/shopping-cart.git
+    git clone https://github.com/aleksanderczeszyk/shopping-cart.git
+
+Recommended directory to clone repository to is. If you decide on another directory structure you need to update project directory
+in **wsgi.py** and **manage.py**.
+
+    ~/Projects/shoppingcart/
 
 Create virtualenv and install all requirements in **backend** directory:
 
@@ -18,6 +23,39 @@ Create virtualenv and install all requirements in **backend** directory:
     python3 -m venv venv_name
     source venv_name/bin/activate
     pip install -r requirements.txt
+
+Staying in the same directory create this file:
+
+    touch .env
+
+Prepare database in postgreSQL:
+
+    sudo -u postgres psql
+    CREATE DATABASE shopping_cart; # Don't forget the semicolon in the end
+    # You can create a new role to connect to database or use your system user
+
+    # Quit postgresql shell
+    \q
+
+Open python shell in your IDE and run the code below:
+
+    from django.core.management.utils import get_random_secret_key
+    print(get_random_secret_key())
+
+Copy the key to clipboard, now open **.env** file and add those lines:
+
+    export SECRET_KEY=<your_secret_key>
+	export DB_USER_NAME=<your_db_user>
+	export DB_USER_PASSWORD=<your_db_password>
+
+Save file and close. Then execute those commands:
+
+	cd shopping-cart/backend/venv_name/bin
+
+	#If you selected another directory structure change this command accordingly 
+	echo 'set a; source ~/Projects/shoppingcart/shopping-cart/backend/.env ;set +a' >> postactivate 
+	cd ../..
+	source venv_name/bin/postactivate
 
 Install all needed node_modules in **frontend** directory:
 
@@ -28,27 +66,6 @@ or with npm:
 
     npm install
 
-Prepare database in postgreSQL:
-
-    sudo -u postgres psql
-    CREATE DATABASE shopping_cart; # Don't forget the semicolon in the end
-
-    # Quit postgresql shell
-    \q
-
-Set up database connection in **shopping-cart/backend/backend/settings.py** in DATABASES section:
-
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'shopping_cart',
-            'USER': 'YOUR_USERNAME', # replace with your own username
-            'PASSWORD': 'YOUR_PASSWORD', # replace with your own password
-            'HOST': 'localhost',
-            'PORT': ''
-        }
-    }
-
 Fire up **backend** server:
 
     cd shopping-cart/backend/
@@ -58,11 +75,8 @@ Fire up **backend** server:
 Open another terminal for **frontend** server:
 
     cd shopping-cart/frontend/
-    yarn start
-
-or with npm:
-
     npm start
+
 
 ### Screenshots
 #### Shopping page
