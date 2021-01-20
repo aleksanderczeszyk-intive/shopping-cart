@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 
 
-SECRET_KEY = '$d%7_u(@bjqh_eznmq2du@$!h7id1sda2qe0=mr+n(^f+ypyu2'
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -81,8 +82,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'shopping_cart',
-        'USER': 'test_user',  # replace with your own username
-        'PASSWORD': 'kardio_osoba',  # replace with your own password
+        'USER': os.getenv("DB_USER_NAME"),  # replace with your own username
+        'PASSWORD': os.getenv("DB_USER_PASSWORD"),  # replace with your own password
         'HOST': 'localhost',
         'PORT': ''
     }
