@@ -5,7 +5,7 @@ from django.contrib.postgres.fields import ArrayField
 from decimal import Decimal
 
 
-class Products(models.Model):
+class Product(models.Model):
     category = models.CharField(max_length=30)
     name = models.CharField(max_length=50)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
@@ -19,7 +19,7 @@ class Products(models.Model):
         db_table = 'products'
 
 
-class Orders(models.Model):
+class Order(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     products = ArrayField(models.CharField(max_length=50), default=list)
     quantities = ArrayField(models.PositiveIntegerField(), default=list)
