@@ -1,32 +1,28 @@
-from django.shortcuts import render
-from django.http import JsonResponse
 from django.contrib.auth.models import User
-from django.contrib.auth.hashers import make_password
-
-from rest_framework import viewsets, permissions
-from cart.models import Products, Orders
-from cart.serializers import ProductsSerializer, OrdersSerializer
+from cart.models import Product, Order
+from cart.serializers import ProductSerializer, OrderSerializer
 from cart.serializers import UserSerializer
 from cart.permissions import IsOwnerOrReadOnly
 from cart.permissions import IsStaffOrTargetUser
+from django.contrib.auth.hashers import make_password
 
-import json
-import logging
+from rest_framework import viewsets, permissions
+from rest_framework import generics
 
 
-# Create your views here.
-class ProductsViewSet(viewsets.ModelViewSet):
-    queryset = Products.objects.all().order_by('-name')
-    serializer_class = ProductsSerializer
-    permission_classes = [IsOwnerOrReadOnly]
+class ProductList(generics.ListAPIView):
+    queryset = Product.objects.all().order_by('-name')
+    serializer_class = ProductSerializer
 
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+
+class ProductDetail(generics.RetrieveAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
 
 
 class OrdersViewSet(viewsets.ModelViewSet):
-    queryset = Orders.objects.all().order_by('-id')
-    serializer_class = OrdersSerializer
+    queryset = Order.objects.all().order_by('-id')
+    serializer_class = OrderSerializer
     permission_classes = (
         permissions.IsAuthenticated,
         IsOwnerOrReadOnly

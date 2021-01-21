@@ -21,16 +21,17 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from cart.views import ProductsViewSet, OrdersViewSet, UserViewSet
+from cart.views import ProductList, ProductDetail, OrdersViewSet, UserViewSet
 
 router = DefaultRouter()
-router.register(r'products', ProductsViewSet)
 router.register(r'orders', OrdersViewSet)
 router.register(r'users', UserViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('api/products/', ProductList.as_view(), name='product-list'),
+    path('api/products/<int:pk>', ProductDetail.as_view(), name='product-detail'),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh')
